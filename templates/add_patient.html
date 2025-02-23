@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Add Patient - Admin Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <nav class="bg-gray-800 text-white p-4 shadow">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-xl font-bold">Admin Dashboard</h1>
+      <div>
+        <a href="{{ url_for('admin_dashboard') }}" class="mr-4 hover:underline">Dashboard</a>
+        <a href="{{ url_for('admin_logout') }}" class="hover:underline">Logout</a>
+      </div>
+    </div>
+  </nav>
+
+  <div class="container mx-auto py-12">
+    <div class="max-w-xl mx-auto bg-white p-8 rounded-lg shadow-lg">
+      <h2 class="text-2xl font-bold mb-6 text-center">Add Patient</h2>
+      <form action="{{ url_for('add_patient') }}" method="POST">
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Nama Pasien</label>
+          <input type="text" name="name" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Tanggal Lahir</label>
+          <input type="date" name="birth_date" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Alamat</label>
+          <input type="text" name="address" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Nomor Telepon</label>
+          <input type="text" name="phone" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Diagnosa</label>
+          <input type="text" name="diagnosis" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Gejala</label>
+          <input type="text" name="symptoms" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Dokter Penanggung Jawab</label>
+          <input type="text" name="doctor" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Tanggal Masuk</label>
+          <input type="date" name="admission_date" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-4">
+          <label class="block text-gray-700 font-medium mb-2">Tanggal Keluar</label>
+          <input type="date" name="discharge_date" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="mb-6">
+          <label class="block text-gray-700 font-medium mb-2">Biaya Perawatan</label>
+          <input type="text" name="treatment_cost" class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500" required>
+        </div>
+        <div class="flex justify-between">
+          <button type="submit" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Add Patient</button>
+          <a href="{{ url_for('admin_dashboard') }}" class="bg-gray-500 hover:bg-gray-600 text-white font-bold py-2 px-4 rounded">Cancel</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

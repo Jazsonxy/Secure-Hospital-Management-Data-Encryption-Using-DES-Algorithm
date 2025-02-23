@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Website Rumah Sakit</title>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap" rel="stylesheet"/>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body { font-family: 'Roboto', sans-serif; }
+  </style>
+</head>
+<body class="bg-gray-100 text-gray-800">
+  <nav class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto flex justify-between items-center">
+      <div class="flex space-x-6">
+        <a class="hover:text-gray-400" href="#about">Tentang Kami</a>
+        <a class="hover:text-gray-400" href="#patients">Daftar Pasien</a>
+        <a class="hover:text-gray-400" href="#contact">Kontak</a>
+      </div>
+      <a href="{{ url_for('admin_login') }}" class="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded">Admin Login</a>
+    </div>
+  </nav>    
+  {% set bg_url = url_for('static', filename='uploads/bg.jpg') %}
+    <header id="header" class="relative text-white py-20" style="background-image: url('{{ bg_url }}'); background-size: cover; background-position: center;">
+    <div class="absolute inset-0 bg-black opacity-50"></div>
+    <div class="container mx-auto flex items-center justify-between relative z-10 px-8">
+      <div class="w-1/2 pr-8">
+        <h1 class="text-4xl font-bold mb-8">
+          Selamat datang di Website Rumah Sakit Kami.<br>
+          Temukan layanan kesehatan terbaik untuk Anda!
+        </h1>
+        <p class="text-sm mb-4">
+          Kami berkomitmen memberikan layanan kesehatan berkualitas dengan fasilitas modern.
+        </p>
+        <div class="mt-4">
+          <h3 class="text-xl font-bold mb-2">Hubungi Kami:</h3>
+          <div class="flex space-x-4">
+            <a class="text-white hover:text-blue-500 transition duration-300" href="https://www.linkedin.com" target="_blank">
+              <i class="fab fa-linkedin fa-2x"></i>
+            </a>
+            <a class="text-white hover:text-pink-600 transition duration-300" href="https://www.instagram.com" target="_blank">
+              <i class="fab fa-instagram fa-2x"></i>
+            </a>
+            <a class="text-white" href="https://github.com" target="_blank">
+              <i class="fab fa-github fa-2x"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+      <div class="w-1/2 flex justify-end">
+        <img alt="Logo Rumah Sakit" class="w-80 h-80" src="http://localhost/hospital_management\static\uploads\profile.png"/>
+      </div>
+    </div>
+  </header>
+  
+  <section id="patients" class="container mx-auto py-20">
+    <h2 class="text-3xl font-bold mb-6">Daftar Pasien</h2>
+    
+    <div class="mb-4">
+      <input type="text" id="searchInput" placeholder="Cari pasien..." class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+    </div>
+    
+    <div class="overflow-auto max-h-96 border border-gray-300 rounded">
+      <table class="min-w-full bg-white">
+        <thead class="bg-gray-800 text-white">
+          <tr>
+            <th class="py-2 px-4 border-b">ID Pasien</th>
+            <th class="py-2 px-4 border-b">Nama Pasien</th>
+            <th class="py-2 px-4 border-b">Tanggal Lahir (Enkripsi)</th>
+            <th class="py-2 px-4 border-b">Alamat (Enkripsi)</th>
+            <th class="py-2 px-4 border-b">Nomor Telepon (Enkripsi)</th>
+            <th class="py-2 px-4 border-b">Diagnosa (Enkripsi)</th>
+            <th class="py-2 px-4 border-b">Gejala (Enkripsi)</th>
+            <th class="py-2 px-4 border-b">Dokter</th>
+            <th class="py-2 px-4 border-b">Tanggal Masuk</th>
+            <th class="py-2 px-4 border-b">Tanggal Keluar</th>
+            <th class="py-2 px-4 border-b">Biaya Perawatan</th>
+          </tr>
+        </thead>
+        <tbody id="patientTable">
+          {% for patient in patients %}
+          <tr class="patient-row hover:bg-gray-100">
+            <td class="py-2 px-4 border-b text-center">{{ patient.id }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.nama_pasien }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.birth_date_encrypted }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.address_encrypted }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.phone_encrypted }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.diagnosis_encrypted }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.symptoms_encrypted }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.dokter_penanggung_jawab }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.tanggal_masuk }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.tanggal_keluar }}</td>
+            <td class="py-2 px-4 border-b">{{ patient.biaya_perawatan }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+  
+  <section id="contact" class="bg-white p-8 rounded-lg shadow-lg container mx-auto mb-20">
+    <h2 class="text-3xl font-bold mb-6 text-center">Contact Me</h2>
+    
+    {% if contact_error %}
+      <p class="text-center text-red-500 mb-4">{{ contact_error }}</p>
+    {% endif %}
+    
+    <form action="{{ url_for('index') }}" method="POST" class="max-w-lg mx-auto">
+      <div class="mb-4">
+        <input class="w-full p-3 border border-gray-300 rounded-lg" name="name" placeholder="Your Name" required type="text"/>
+      </div>
+      <div class="mb-4">
+        <input class="w-full p-3 border border-gray-300 rounded-lg" name="email" placeholder="Your Email" required type="email"/>
+      </div>
+      <div class="mb-4">
+        <textarea class="w-full p-3 border border-gray-300 rounded-lg" name="message" placeholder="Your Message" required rows="5"></textarea>
+      </div>
+      <div class="text-center">
+        <button class="bg-gray-900 text-white py-3 px-6 rounded-lg hover:bg-green-500 active:bg-blue-700" name="comment_submit" type="submit">Send Message</button>
+      </div>
+    </form>
+    
+    <div class="mt-10">
+      <h3 class="text-2xl font-bold mb-4 text-center">Recent Comments</h3>
+      {% if comments %}
+      <div class="space-y-4">
+        {% for comment in comments %}
+          <div class="p-4 border rounded shadow-sm">
+            <p class="font-bold">{{ comment.name }} <span class="text-sm text-gray-500">[{{ comment.created_at }}]</span></p>
+            <p class="text-gray-700">{{ comment.message }}</p>
+          </div>
+        {% endfor %}
+      </div>
+      {% else %}
+        <p class="text-center text-gray-500">No comments yet.</p>
+      {% endif %}
+    </div>
+  </section>
+  
+  <footer class="bg-gray-900 text-white py-6">
+    <div class="container mx-auto text-center">
+      <p>© 2025 Website Rumah Sakit. Semua hak dilindungi.</p>
+      <div class="mt-4 flex justify-center space-x-4">
+        <a class="text-white hover:text-gray-400" href="https://www.linkedin.com" target="_blank">
+          <i class="fab fa-linkedin fa-2x"></i>
+        </a>
+        <a class="text-white hover:text-gray-400" href="https://www.instagram.com" target="_blank">
+          <i class="fab fa-instagram fa-2x"></i>
+        </a>
+        <a class="text-white hover:text-gray-400" href="https://github.com" target="_blank">
+          <i class="fab fa-github fa-2x"></i>
+        </a>
+      </div>
+    </div>
+  </footer>
+  
+  <script>
+    const searchInput = document.getElementById('searchInput');
+    const tableRows = document.querySelectorAll('.patient-row');
+    
+    searchInput.addEventListener('keyup', function() {
+      const searchTerm = searchInput.value.toLowerCase();
+      tableRows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

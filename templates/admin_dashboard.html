@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Dashboard - Website Rumah Sakit</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100">
+
+  <div class="flex">
+
+    <aside class="w-64 bg-gray-800 text-white min-h-screen">
+      <div class="p-6 text-2xl font-bold border-b border-gray-700">
+        Admin Panel
+      </div>
+      <nav class="mt-4">
+        <a href="{{ url_for('admin_dashboard') }}" class="block py-2.5 px-6 hover:bg-gray-700">Dashboard</a>
+        <a href="{{ url_for('add_patient') }}" class="block py-2.5 px-6 hover:bg-gray-700">Add Patient</a>
+        <a href="{{ url_for('admin_logout') }}" class="block py-2.5 px-6 hover:bg-gray-700">Logout</a>
+      </nav>
+    </aside>
+
+    <main class="flex-1 p-6">
+
+      <header class="mb-6">
+        <h1 class="text-3xl font-bold">Welcome, {{ session['username'] }}</h1>
+        <p class="text-gray-600">Here is an overview of your patients.</p>
+      </header>
+
+      <section class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
+        <div class="bg-white shadow rounded-lg p-4">
+          <div class="text-gray-500">Total Patients</div>
+          <div class="text-2xl font-bold">{{ patients|length }}</div>
+        </div>
+
+      </section>
+
+      <div class="mb-4">
+        <input type="text" id="dashboardSearchInput" placeholder="Cari pasien..." class="w-full p-3 border rounded focus:outline-none focus:ring-2 focus:ring-blue-500">
+      </div>
+
+      <div class="overflow-auto max-h-96 border border-gray-300 rounded">
+        <table class="min-w-full">
+          <thead class="bg-gray-800 text-white">
+            <tr>
+              <th class="py-2 px-4 border-b">ID Pasien</th>
+              <th class="py-2 px-4 border-b">Nama Pasien</th>
+              <th class="py-2 px-4 border-b">Tanggal Lahir</th>
+              <th class="py-2 px-4 border-b">Alamat</th>
+              <th class="py-2 px-4 border-b">Nomor Telepon</th>
+              <th class="py-2 px-4 border-b">Diagnosa</th>
+              <th class="py-2 px-4 border-b">Gejala</th>
+              <th class="py-2 px-4 border-b">Dokter</th>
+              <th class="py-2 px-4 border-b">Tanggal Masuk</th>
+              <th class="py-2 px-4 border-b">Tanggal Keluar</th>
+              <th class="py-2 px-4 border-b">Biaya Perawatan</th>
+              <th class="py-2 px-4 border-b">Actions</th>
+            </tr>
+          </thead>
+          <tbody id="dashboardPatientTable" class="text-gray-700">
+            {% for patient in patients %}
+            <tr class="patient-row hover:bg-gray-100">
+              <td class="py-2 px-4 border-b text-center">{{ patient.id }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.nama_pasien }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.birth_date_decrypted }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.address_decrypted }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.phone_decrypted }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.diagnosis_decrypted }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.symptoms_decrypted }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.dokter_penanggung_jawab }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.tanggal_masuk }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.tanggal_keluar }}</td>
+              <td class="py-2 px-4 border-b">{{ patient.biaya_perawatan }}</td>
+              <td class="py-2 px-4 border-b">
+                <a href="{{ url_for('edit_patient', id=patient.id) }}" class="bg-green-500 hover:bg-green-600 text-white font-bold py-1 px-2 rounded inline-block mb-1">Edit</a>
+                <form action="{{ url_for('delete_patient', id=patient.id) }}" method="POST" class="inline-block">
+                  <button type="submit" onclick="return confirm('Are you sure?')" class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded">Delete</button>
+                </form>
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </main>
+  </div>
+  
+  <script>
+    const dashboardSearchInput = document.getElementById('dashboardSearchInput');
+    const dashboardRows = document.querySelectorAll('.patient-row');
+
+    dashboardSearchInput.addEventListener('keyup', function() {
+      const searchTerm = dashboardSearchInput.value.toLowerCase();
+      dashboardRows.forEach(row => {
+        const rowText = row.innerText.toLowerCase();
+        row.style.display = rowText.includes(searchTerm) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>
